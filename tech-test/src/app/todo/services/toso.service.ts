@@ -1,7 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Todo } from '../models/todo.interface';
 import { Observable } from 'rxjs';
+import { Injectable } from '@angular/core';
 
+@Injectable()
 export class TodoService {
   private readonly API_URL = 'http://localhost:3000';
 
