@@ -17,7 +17,7 @@ export class TodoService {
     return this.http.post<Todo>(`${this.API_URL}/tasks`, todo);
   }
 
-  public update(id: number, todo: Partial<Todo>): Observable<Todo> {
+  public update(id: string | number, todo: Partial<Todo>): Observable<Todo> {
     return this.http.put<Todo>(`${this.API_URL}/tasks/${id}`, todo);
   }
 
