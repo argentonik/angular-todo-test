@@ -14,7 +14,6 @@ import {
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent {
-  public title = 'tech-test';
   public loading = true;
 
   constructor(private router: Router) {

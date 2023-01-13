@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { TodoListComponent } from './components/todo-list/todo-list.component';
 import { TodoResolver } from './todo.resolver';
+import { TodoEditComponent } from './components/todo-edit/todo-edit.component';
 
 const routes: Routes = [
   {
@@ -10,6 +11,12 @@ const routes: Routes = [
     resolve: {
       courses: TodoResolver,
     },
+    pathMatch: 'full',
+  },
+  {
+    path: 'create',
+    component: TodoEditComponent,
+    pathMatch: 'full',
   },
 ];
 

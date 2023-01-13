@@ -1,3 +1,13 @@
+<header class="todo-header">
+  <div class="todo-header__content">
+    <h1>Todo list</h1>
+    <button class="todo-header__action" mat-fab color="primary" routerLink="create">
+      <mat-icon>add</mat-icon>
+    </button>
+  </div>
+  <mat-divider></mat-divider>
+</header>
+
 <div class="todo-list" *ngIf="todos$ | async as todos">
   <mat-card class="todo-card" *ngFor="let todo of todos">
     <mat-card-title>{{todo.label}}</mat-card-title>

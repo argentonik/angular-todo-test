@@ -1,0 +1,30 @@
+<header class="todo_header">
+  <div class="todo-header__content">
+    <h1>{{id ? 'Editing Todo' : 'Creating Todo'}}</h1>
+  </div>
+  <mat-divider></mat-divider>
+</header>
+
+<form class="todo-form" [formGroup]="todoForm">
+  <mat-form-field class="field" appearance="fill">
+    <mat-label>Title</mat-label>
+    <input matInput type="text" formControlName="label" autocomplete="off">
+  </mat-form-field>
+
+  <mat-form-field class="field" appearance="fill">
+    <mat-label>Category</mat-label>
+    <input matInput type="text" formControlName="category" autocomplete="off">
+  </mat-form-field>
+
+  <mat-form-field class="field" appearance="fill">
+    <mat-label>Description</mat-label>
+    <textarea matInput type="text" formControlName="category" autocomplete="off"></textarea>
+  </mat-form-field>
+
+  <mat-checkbox class="field" formControlName="done">Completed</mat-checkbox>
+</form>
+
+<div class="actions">
+  <button class="actions__button" mat-raised-button>Cancel</button>
+  <button class="actions__button" mat-raised-button color="primary">{{id ? 'Update' : 'Create'}}</button>
+</div>

@@ -1,3 +1,18 @@
+.todo-header {
+  margin-bottom: 40px;
+
+  &__content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  &__action {
+    position: relative;
+    top: 25px;
+  }
+}
+
 .todo-list {
   display: grid;
   grid-template-columns: 1fr 1fr;
