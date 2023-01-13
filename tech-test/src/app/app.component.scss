@@ -8,14 +8,14 @@
   display: flex;
   flex: 1;
   width: 100%;
-  height: calc(100% - 64px);
+  min-height: calc(100% - 64px);
   justify-content: center;
   background: #f6f6f6;
 }
 
 .app-content {
   width: 800px;
-  margin-top: 20px;
+  margin: 20px;
   padding: 40px 20px;
   background: #fff;
 }
