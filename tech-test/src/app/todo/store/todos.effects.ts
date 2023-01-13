@@ -38,7 +38,7 @@ export class TodoEffects {
         concatMap((action) =>
           this.todoService.update(action.update.id, action.update.changes)
         ),
-        tap(() => this.router.navigateByUrl('/todos'))
+        tap(() => this.router.navigateByUrl('/todo'))
       ),
     { dispatch: false }
   );

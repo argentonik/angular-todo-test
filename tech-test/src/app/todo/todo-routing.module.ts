@@ -16,6 +16,17 @@ const routes: Routes = [
   {
     path: 'create',
     component: TodoEditComponent,
+    resolve: {
+      courses: TodoResolver,
+    },
+    pathMatch: 'full',
+  },
+  {
+    path: 'edit/:id',
+    component: TodoEditComponent,
+    resolve: {
+      courses: TodoResolver,
+    },
     pathMatch: 'full',
   },
 ];

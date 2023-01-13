@@ -1,20 +1,21 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { Observable, of } from 'rxjs';
+import { concatMap, tap } from 'rxjs/operators';
 import { Todo } from '../../models/todo.interface';
-import * as uuid from 'uuid';
-import { createTodo } from '../../store/todo.actions';
+import { createTodo, updateTodo } from '../../store/todo.actions';
 import { Store } from '@ngrx/store';
+import { getTodoById } from '../../store/todo.selectors';
+import * as uuid from 'uuid';
 
 @Component({
   selector: 'app-todo-edit',
   templateUrl: './todo-edit.component.html',
   styleUrls: ['./todo-edit.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class TodoEditComponent implements OnInit, OnDestroy {
-  public id: number | string;
+export class TodoEditComponent {
   public todoForm = new FormGroup({
     label: new FormControl('', [
       Validators.required,
@@ -29,35 +30,32 @@ export class TodoEditComponent implements OnInit, OnDestroy {
     ]),
     done: new FormControl(false),
   });
-
-  private destroy$ = new Subject<void>();
+  public todo$: Observable<Todo | {}> = this.route.params.pipe(
+    concatMap((params) => {
+      return params.id ? this.store.select(getTodoById(params.id)) : of({});
+    }),
+    tap((todo) => {
+      this.todoForm.patchValue(todo);
+    })
+  );
 
   constructor(private route: ActivatedRoute, private store: Store) {}
 
-  public ngOnInit(): void {
-    this.route.queryParams
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((params) => {
-        this.id = params.id;
-        console.log('id', this.id);
-      });
-  }
-
-  public submit() {
-    console.log(this.todoForm);
+  public submit(todoId: string) {
     if (this.todoForm.invalid) {
       return;
     }
 
-    const todo: Todo = {
-      id: uuid.v4(),
-      ...this.todoForm.value,
-    };
-    this.store.dispatch(createTodo({ todo }));
-  }
-
-  public ngOnDestroy() {
-    this.destroy$.next();
-    this.destroy$.complete();
+    if (todoId) {
+      this.store.dispatch(
+        updateTodo({
+          update: { id: todoId, changes: { ...this.todoForm.value } },
+        })
+      );
+    } else {
+      this.store.dispatch(
+        createTodo({ todo: { id: uuid.v4(), ...this.todoForm.value } })
+      );
+    }
   }
 }

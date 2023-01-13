@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Todo } from '../../models/todo.interface';
 import { Store } from '@ngrx/store';
@@ -9,6 +9,7 @@ import { todoActions } from '../../store/todo.actions';
   selector: 'app-todo-list',
   templateUrl: './todo-list.component.html',
   styleUrls: ['./todo-list.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TodoListComponent {
   todos$: Observable<Todo[]> = this.store.select(getAllTodos);
