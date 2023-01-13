@@ -3,7 +3,7 @@
     <mat-card-title>{{todo.label}}</mat-card-title>
     <mat-card-subtitle>{{todo.category}}</mat-card-subtitle>
     <mat-card-actions>
-      <button mat-button>DELETE</button>
+      <button mat-button (click)="deleteTodo(todo.id)">DELETE</button>
       <button mat-button>EDIT</button>
     </mat-card-actions>
   </mat-card>
