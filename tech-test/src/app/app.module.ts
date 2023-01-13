@@ -11,6 +11,7 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { environment } from '../environments/environment';
 import { EffectsModule } from '@ngrx/effects';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatToolbarModule } from '@angular/material/toolbar';
 
 @NgModule({
   declarations: [AppComponent],
@@ -24,6 +25,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     EffectsModule.forRoot([]),
     !environment.production ? StoreDevtoolsModule.instrument() : [],
     MatProgressSpinnerModule,
+    MatToolbarModule,
   ],
   providers: [HttpClient],
   bootstrap: [AppComponent],
