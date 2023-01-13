@@ -11,12 +11,20 @@
 <div class="todo-list" *ngIf="todos$ | async as todos">
   <mat-card class="todo-card" *ngFor="let todo of todos">
     <mat-card-title class="todo-card__title">
-      <mat-checkbox class="todo-card__checkbox" color="primary"
-                    [checked]="todo.done" *ngIf="!todo.done" matTooltip="Complete"></mat-checkbox>
-      <mat-icon *ngIf="todo.done" matTooltip="Completed" color="primary">done</mat-icon>
+      <mat-checkbox class="todo-card__checkbox"
+                    color="primary"
+                    matTooltip="Complete"
+                    *ngIf="!todo.done"
+                    [checked]="todo.done"
+                    (change)="updateTodoStatus(todo, true)"></mat-checkbox>
+      <mat-icon color="primary"
+                *ngIf="todo.done"
+                [matTooltip]="'Completed ' + (todo.done | date: 'dd.MM.yyyy')">done</mat-icon>
       <span [class.todo-card__completed-label]="todo.done">{{todo.label}}</span>
     </mat-card-title>
+
     <mat-card-subtitle>{{todo.category}}</mat-card-subtitle>
+
     <mat-card-content>
       {{todo.description}}
     </mat-card-content>
@@ -28,7 +36,8 @@
       <button mat-button color="primary" [routerLink]="['/todo/edit', todo.id]" matTooltip="Edit">
         <mat-icon>edit</mat-icon>
       </button>
-      <button class="todo-card__btn" mat-button color="primary" matTooltip="Mark uncompleted" *ngIf="todo.done">
+      <button class="todo-card__btn" mat-button color="primary" matTooltip="Mark uncompleted"
+              *ngIf="todo.done" (click)="updateTodoStatus(todo, false)">
         <mat-icon>replay</mat-icon>
       </button>
     </mat-card-actions>

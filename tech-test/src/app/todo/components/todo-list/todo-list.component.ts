@@ -3,7 +3,7 @@ import { Observable } from 'rxjs';
 import { Todo } from '../../models/todo.interface';
 import { Store } from '@ngrx/store';
 import { getAllTodos } from '../../store/todo.selectors';
-import { todoActions } from '../../store/todo.actions';
+import { todoActions, updateTodo } from '../../store/todo.actions';
 
 @Component({
   selector: 'app-todo-list',
@@ -12,11 +12,25 @@ import { todoActions } from '../../store/todo.actions';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TodoListComponent {
-  todos$: Observable<Todo[]> = this.store.select(getAllTodos);
+  public todos$: Observable<Todo[]> = this.store.select(getAllTodos);
 
   constructor(private store: Store) {}
 
-  deleteTodo(todoId: number) {
+  public updateTodoStatus(todo: Todo, status: boolean) {
+    this.store.dispatch(
+      updateTodo({
+        update: {
+          id: todo.id,
+          changes: {
+            ...todo,
+            done: status === true ? new Date().toUTCString() : status,
+          },
+        },
+      })
+    );
+  }
+
+  public deleteTodo(todoId: number) {
     this.store.dispatch(todoActions.deleteTodo({ todoId }));
   }
 }

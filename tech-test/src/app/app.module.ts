@@ -12,6 +12,7 @@ import { environment } from '../environments/environment';
 import { EffectsModule } from '@ngrx/effects';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatCardModule } from '@angular/material/card';
 
 @NgModule({
   declarations: [AppComponent],
@@ -26,6 +27,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
     !environment.production ? StoreDevtoolsModule.instrument() : [],
     MatProgressSpinnerModule,
     MatToolbarModule,
+    MatCardModule,
   ],
   providers: [HttpClient],
   bootstrap: [AppComponent],
