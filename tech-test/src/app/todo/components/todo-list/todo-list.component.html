@@ -1,7 +1,7 @@
 <header class="todo-header">
   <div class="todo-header__content">
     <h1>Todo list</h1>
-    <button class="todo-header__action" mat-fab color="primary" routerLink="create">
+    <button class="todo-header__action" mat-fab color="primary" routerLink="create" matTooltip="Create Todo">
       <mat-icon>add</mat-icon>
     </button>
   </div>
@@ -19,7 +19,7 @@
                     (change)="updateTodoStatus(todo, true)"></mat-checkbox>
       <mat-icon color="primary"
                 *ngIf="todo.done"
-                [matTooltip]="'Completed ' + (todo.done | date: 'dd.MM.yyyy')">done</mat-icon>
+                [matTooltip]="'Completed ' + todo.done">done</mat-icon>
       <span [class.todo-card__completed-label]="todo.done">{{todo.label}}</span>
     </mat-card-title>
 
