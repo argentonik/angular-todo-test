@@ -44,6 +44,11 @@ export const deleteTodoSuccess = createAction(
   props<{ todoId: number }>()
 );
 
+export const failure = createAction(
+  '[Todos] Todo failure',
+  props<{ payload: string }>()
+);
+
 export const todoActions = {
   getTodos,
   todosLoaded,
@@ -54,4 +59,5 @@ export const todoActions = {
   updateTodoSuccess,
   deleteTodo,
   deleteTodoSuccess,
+  failure,
 };

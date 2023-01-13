@@ -23,3 +23,8 @@ export const todoLoading = createSelector(
   todoFeatureSelector,
   (state) => state.todoLoading
 );
+
+export const todoError = createSelector(
+  todoFeatureSelector,
+  (state) => state.error
+);

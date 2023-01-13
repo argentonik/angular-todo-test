@@ -38,7 +38,7 @@ export class TodoEditComponent {
       this.todoForm.patchValue(todo);
     })
   );
-  public todoLoading$ = this.store.select(todoLoading).pipe(debounceTime(300));
+  public todoLoading$ = this.store.select(todoLoading).pipe(debounceTime(100));
 
   constructor(private route: ActivatedRoute, private store: Store) {}
 
