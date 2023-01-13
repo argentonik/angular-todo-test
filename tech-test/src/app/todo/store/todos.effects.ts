@@ -21,34 +21,37 @@ export class TodoEffects {
     )
   );
 
-  createTodo$ = createEffect(
-    () =>
-      this.actions$.pipe(
-        ofType(todoActions.createTodo),
-        concatMap((action) => this.todoService.create(action.todo)),
-        tap(() => this.router.navigateByUrl('/todo'))
+  createTodo$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(todoActions.createTodo),
+      concatMap((action) =>
+        this.todoService.create(action.todo).pipe(map(() => action))
       ),
-    { dispatch: false }
+      map((action) => todoActions.createTodoSuccess(action)),
+      tap(() => this.router.navigateByUrl('/todo'))
+    )
   );
 
-  updateTodo$ = createEffect(
-    () =>
-      this.actions$.pipe(
-        ofType(todoActions.updateTodo),
-        concatMap((action) =>
-          this.todoService.update(action.update.id, action.update.changes)
-        ),
-        tap(() => this.router.navigateByUrl('/todo'))
+  updateTodo$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(todoActions.updateTodo),
+      concatMap((action) =>
+        this.todoService
+          .update(action.update.id, action.update.changes)
+          .pipe(map(() => action))
       ),
-    { dispatch: false }
+      map((action) => todoActions.updateTodoSuccess(action)),
+      tap(() => this.router.navigateByUrl('/todo'))
+    )
   );
 
-  deleteTodo$ = createEffect(
-    () =>
-      this.actions$.pipe(
-        ofType(todoActions.deleteTodo),
-        concatMap((action) => this.todoService.delete(action.todoId))
+  deleteTodo$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(todoActions.deleteTodo),
+      concatMap((action) =>
+        this.todoService.delete(action.todoId).pipe(map(() => action))
       ),
-    { dispatch: false }
+      map((action) => todoActions.deleteTodoSuccess(action))
+    )
   );
 }

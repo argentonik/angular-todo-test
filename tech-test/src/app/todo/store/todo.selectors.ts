@@ -18,3 +18,8 @@ export const areTodosLoaded = createSelector(
   todoFeatureSelector,
   (state) => state.todosLoaded
 );
+
+export const todoLoading = createSelector(
+  todoFeatureSelector,
+  (state) => state.todoLoading
+);

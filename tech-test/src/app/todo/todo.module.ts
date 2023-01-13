@@ -21,6 +21,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatRadioModule } from '@angular/material/radio';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 
 @NgModule({
   declarations: [TodoListComponent, TodoEditComponent],
@@ -41,6 +43,8 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     MatInputModule,
     MatCheckboxModule,
     MatTooltipModule,
+    MatRadioModule,
+    MatProgressBarModule,
   ],
   providers: [TodoService, TodoResolver],
 })

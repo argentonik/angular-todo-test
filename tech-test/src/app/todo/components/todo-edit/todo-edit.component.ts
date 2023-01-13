@@ -2,11 +2,11 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Observable, of } from 'rxjs';
-import { concatMap, tap } from 'rxjs/operators';
+import { concatMap, debounceTime, tap } from 'rxjs/operators';
 import { Todo } from '../../models/todo.interface';
 import { createTodo, updateTodo } from '../../store/todo.actions';
 import { Store } from '@ngrx/store';
-import { getTodoById } from '../../store/todo.selectors';
+import { getTodoById, todoLoading } from '../../store/todo.selectors';
 import * as uuid from 'uuid';
 
 @Component({
@@ -38,6 +38,7 @@ export class TodoEditComponent {
       this.todoForm.patchValue(todo);
     })
   );
+  public todoLoading$ = this.store.select(todoLoading).pipe(debounceTime(300));
 
   constructor(private route: ActivatedRoute, private store: Store) {}
 

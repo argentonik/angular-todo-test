@@ -1,12 +1,36 @@
 <header class="todo-header">
   <div class="todo-header__content">
     <h1>Todo list</h1>
-    <button class="todo-header__action" mat-fab color="primary" routerLink="create" matTooltip="Create Todo">
-      <mat-icon>add</mat-icon>
-    </button>
+
+    <div class="todo-header__actions">
+      <button class="todo-header__action" mat-fab color="primary"
+              [matTooltip]="showFilters ? 'Hide filters' : 'Filters'" (click)="toggleFilters()">
+        <mat-icon>filter_list</mat-icon>
+      </button>
+      <button class="todo-header__action" mat-fab color="primary" routerLink="create" matTooltip="Create Todo">
+        <mat-icon>add</mat-icon>
+      </button>
+    </div>
   </div>
   <mat-divider></mat-divider>
 </header>
+
+<div class="filters" *ngIf="showFilters">
+  <div class="filters__search">
+    <mat-form-field class="filters__field" appearance="fill">
+      <mat-label>Search</mat-label>
+      <input matInput type="text" autocomplete="off">
+    </mat-form-field>
+
+    <button class="filters__button" mat-raised-button color="primary">Search</button>
+  </div>
+
+  <mat-radio-group class="filters__radio-filter" aria-label="Select an option" color="primary">
+    <mat-radio-button value="1">All</mat-radio-button>
+    <mat-radio-button value="2">Completed</mat-radio-button>
+    <mat-radio-button value="3">Not completed</mat-radio-button>
+  </mat-radio-group>
+</div>
 
 <div class="todo-list" *ngIf="todos$ | async as todos">
   <mat-card class="todo-card" *ngFor="let todo of todos">
@@ -30,16 +54,22 @@
     </mat-card-content>
 
     <mat-card-actions class="todo-card__actions">
-      <button mat-button color="disabled" (click)="deleteTodo(todo.id)" matTooltip="Delete">
+      <button mat-button color="disabled" (click)="deleteTodo(todo.id)" matTooltip="Delete"
+              [disabled]="(todoLoading$ | async) == todo.id">
         <mat-icon>delete</mat-icon>
       </button>
-      <button mat-button color="primary" [routerLink]="['/todo/edit', todo.id]" matTooltip="Edit">
+      <button mat-button color="primary" [routerLink]="['/todo/edit', todo.id]" matTooltip="Edit"
+              [disabled]="(todoLoading$ | async) == todo.id">
         <mat-icon>edit</mat-icon>
       </button>
       <button class="todo-card__btn" mat-button color="primary" matTooltip="Mark uncompleted"
-              *ngIf="todo.done" (click)="updateTodoStatus(todo, false)">
+              [disabled]="(todoLoading$ | async) == todo.id" *ngIf="todo.done" (click)="updateTodoStatus(todo, false)">
         <mat-icon>replay</mat-icon>
       </button>
     </mat-card-actions>
+
+    <mat-card-footer *ngIf="(todoLoading$ | async) == todo.id">
+      <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+    </mat-card-footer>
   </mat-card>
 </div>

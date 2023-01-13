@@ -9,8 +9,18 @@ export const todosLoaded = createAction(
   props<{ todos: Todo[] }>()
 );
 
+export const todosLoading = createAction(
+  '[Todos] Todos loading',
+  props<{ status: boolean; id?: number | string }>()
+);
+
 export const createTodo = createAction(
   '[Todos] Create Todo',
+  props<{ todo: Todo }>()
+);
+
+export const createTodoSuccess = createAction(
+  '[Todos] Create Todo Success',
   props<{ todo: Todo }>()
 );
 
@@ -19,15 +29,29 @@ export const updateTodo = createAction(
   props<{ update: Update<Todo> }>()
 );
 
+export const updateTodoSuccess = createAction(
+  '[Todos] Update Todo Success',
+  props<{ update: Update<Todo> }>()
+);
+
 export const deleteTodo = createAction(
   '[Todos] Delete Todo',
+  props<{ todoId: number }>()
+);
+
+export const deleteTodoSuccess = createAction(
+  '[Todos] Delete Todo Success',
   props<{ todoId: number }>()
 );
 
 export const todoActions = {
   getTodos,
   todosLoaded,
+  todosLoading,
   createTodo,
+  createTodoSuccess,
   updateTodo,
+  updateTodoSuccess,
   deleteTodo,
+  deleteTodoSuccess,
 };
