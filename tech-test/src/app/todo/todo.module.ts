@@ -13,6 +13,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { TodoResolver } from './todo.resolver';
+import { MatIconModule } from '@angular/material/icon';
 
 @NgModule({
   declarations: [TodoListComponent],
@@ -25,6 +26,7 @@ import { TodoResolver } from './todo.resolver';
     MatCardModule,
     MatButtonModule,
     MatProgressSpinnerModule,
+    MatIconModule,
   ],
   providers: [TodoService, TodoResolver],
 })
