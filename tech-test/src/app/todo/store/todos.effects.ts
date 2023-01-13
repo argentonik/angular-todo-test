@@ -26,7 +26,7 @@ export class TodoEffects {
       this.actions$.pipe(
         ofType(todoActions.createTodo),
         concatMap((action) => this.todoService.create(action.todo)),
-        tap(() => this.router.navigateByUrl('/todos'))
+        tap(() => this.router.navigateByUrl('/todo'))
       ),
     { dispatch: false }
   );
