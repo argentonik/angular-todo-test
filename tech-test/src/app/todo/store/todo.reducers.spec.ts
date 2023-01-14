@@ -2,7 +2,7 @@ import { initialState, todoReducer, TodoState } from './todo.reducers';
 import { todoActions } from './todo.actions';
 import { TODO, TODOS, TODOS_DICTIONARY } from '../tests/todos.mock';
 
-describe('TodoReducer', () => {
+describe('TodoReducers', () => {
   let state: TodoState;
 
   beforeEach(() => {
