@@ -17,28 +17,28 @@ describe('TodoSelectors', () => {
     };
   });
 
-  it('getAllTodos() should return a correct data', () => {
+  it('getAllTodos should return a correct data', () => {
     const results = todoSelectors.getAllTodos(state);
     expect(results).toEqual(TODOS);
   });
 
-  it('getTodoById() should return a correct data', () => {
+  it('getTodoById should return a correct data', () => {
     const results = todoSelectors.getTodoById(TODO.id)(state);
     expect(results).toEqual(TODO);
   });
 
-  it('areTodosLoaded() should return a correct data', () => {
+  it('areTodosLoaded should return a correct data', () => {
     const results = todoSelectors.areTodosLoaded(state);
     expect(results).toBeTrue();
   });
 
-  it('todoLoading() should return a correct data', () => {
+  it('todoLoading should return a correct data', () => {
     state = { [key]: { ...state[key], todoLoading: TODO.id } };
     const results = todoSelectors.todoLoading(state);
     expect(results).toBe(TODO.id);
   });
 
-  it('todoError() should return a correct data', () => {
+  it('todoError should return a correct data', () => {
     const error = 'Error message';
     state = { [key]: { ...state[key], error } };
     const results = todoSelectors.todoError(state);
