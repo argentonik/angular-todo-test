@@ -10,6 +10,8 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { TodoService } from '../services/toso.service';
 import { TestScheduler } from 'rxjs/testing';
 import { todoActions } from './todo.actions';
+import { TypedAction } from '@ngrx/store/src/models';
+import { TodoListComponent } from '../components/todo-list/todo-list.component';
 
 describe('TodoEffects', () => {
   const todoService = jasmine.createSpyObj('todoService', [
@@ -25,9 +27,29 @@ describe('TodoEffects', () => {
   let testScheduler;
   const key = 'todos';
 
+  const testFailure = (
+    action: TypedAction<any>,
+    effect: Observable<any>,
+    serviceMethod: string
+  ) => {
+    const outcome = todoActions.failure({ payload: errorMessage });
+
+    testScheduler.run(({ hot, cold, expectObservable }) => {
+      actions$ = hot('-a', { a: action });
+      const response = cold('-#|', {}, { message: errorMessage });
+      todoService[serviceMethod].and.returnValue(response);
+
+      expectObservable(effect).toBe('--b', { b: outcome });
+    });
+  };
+
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [RouterTestingModule],
+      imports: [
+        RouterTestingModule.withRoutes([
+          { path: 'todo', component: TodoListComponent },
+        ]),
+      ],
       providers: [
         TodoEffects,
         provideMockActions(() => actions$),
@@ -76,16 +98,7 @@ describe('TodoEffects', () => {
     });
 
     it('should handle getTodos and return a failure action', () => {
-      const action = todoActions.getTodos();
-      const outcome = todoActions.failure({ payload: errorMessage });
-
-      testScheduler.run(({ hot, cold, expectObservable }) => {
-        actions$ = hot('-a', { a: action });
-        const response = cold('-#|', {}, { message: errorMessage });
-        todoService.getAll.and.returnValue(response);
-
-        expectObservable(effects.getTodos$).toBe('--b', { b: outcome });
-      });
+      testFailure(todoActions.getTodos(), effects.getTodos$, 'getAll');
     });
   });
 
@@ -105,17 +118,11 @@ describe('TodoEffects', () => {
     });
 
     it('should handle createTodo and return a failure action', () => {
-      const todo = TODO;
-      const action = todoActions.createTodo({ todo });
-      const outcome = todoActions.failure({ payload: errorMessage });
-
-      testScheduler.run(({ hot, cold, expectObservable }) => {
-        actions$ = hot('-a', { a: action });
-        const response = cold('-#|', {}, { message: errorMessage });
-        todoService.create.and.returnValue(response);
-
-        expectObservable(effects.createTodo$).toBe('--b', { b: outcome });
-      });
+      testFailure(
+        todoActions.createTodo({ todo: TODO }),
+        effects.createTodo$,
+        'create'
+      );
     });
   });
 
@@ -136,18 +143,10 @@ describe('TodoEffects', () => {
     });
 
     it('should handle updateTodo and return a failure action', () => {
-      const todo = { ...TODO, label: 'New label' };
-      const update = { id: TODO.id, changes: todo };
+      const update = { id: TODO.id, changes: { ...TODO, label: 'New label' } };
       const action = todoActions.updateTodo({ update });
-      const outcome = todoActions.failure({ payload: errorMessage });
 
-      testScheduler.run(({ hot, cold, expectObservable }) => {
-        actions$ = hot('-a', { a: action });
-        const response = cold('-#|', {}, { message: errorMessage });
-        todoService.update.and.returnValue(response);
-
-        expectObservable(effects.updateTodo$).toBe('--b', { b: outcome });
-      });
+      testFailure(action, effects.updateTodo$, 'update');
     });
   });
 
@@ -166,16 +165,11 @@ describe('TodoEffects', () => {
     });
 
     it('should handle deleteTodo and return a failure action', () => {
-      const action = todoActions.deleteTodo({ todoId: TODO.id });
-      const outcome = todoActions.failure({ payload: errorMessage });
-
-      testScheduler.run(({ hot, cold, expectObservable }) => {
-        actions$ = hot('-a', { a: action });
-        const response = cold('-#|', {}, { message: errorMessage });
-        todoService.delete.and.returnValue(response);
-
-        expectObservable(effects.deleteTodo$).toBe('--b', { b: outcome });
-      });
+      testFailure(
+        todoActions.deleteTodo({ todoId: TODO.id }),
+        effects.deleteTodo$,
+        'delete'
+      );
     });
   });
 });
