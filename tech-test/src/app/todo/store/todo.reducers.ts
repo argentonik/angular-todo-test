@@ -5,8 +5,8 @@ import { createReducer, on } from '@ngrx/store';
 
 export interface TodoState extends EntityState<Todo> {
   todosLoaded: boolean;
-  todoLoading?: number | string;
-  error?: string;
+  todoLoading: number | string;
+  error: string;
 }
 
 export const adapter: EntityAdapter<Todo> = createEntityAdapter<Todo>();
@@ -65,7 +65,6 @@ export const todoReducer = createReducer(
   }),
 
   on(todoActions.failure, (state, action) => {
-    console.log('failure!', action);
     return { ...state, error: action.payload, todoLoading: null };
   })
 );
