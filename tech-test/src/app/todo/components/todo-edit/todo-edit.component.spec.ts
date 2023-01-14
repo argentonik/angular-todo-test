@@ -1,6 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { TodoEditComponent } from './todo-edit.component';
+import { RouterTestingModule } from '@angular/router/testing';
+import { provideMockStore } from '@ngrx/store/testing';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 describe('TodoEditComponent', () => {
   let component: TodoEditComponent;
@@ -8,9 +11,10 @@ describe('TodoEditComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ TodoEditComponent ]
-    })
-    .compileComponents();
+      declarations: [TodoEditComponent],
+      imports: [RouterTestingModule, MatCheckboxModule],
+      providers: [provideMockStore()],
+    }).compileComponents();
   });
 
   beforeEach(() => {
