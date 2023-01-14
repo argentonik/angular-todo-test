@@ -70,17 +70,15 @@ describe('TodoListComponent', () => {
     expect(renderedTodo.description).toBe(mockTodo.description);
   });
 
-  it('should dispatch deleteTodo action', () => {
-    const todoToDelete = TODOS[0];
-
-    click(fixture, 'todo-delete-btn');
-    expect(mockStore.dispatch).toHaveBeenCalledTimes(1);
-    expect(mockStore.dispatch).toHaveBeenCalledWith(
-      todoActions.deleteTodo({ todoId: todoToDelete.id })
-    );
+  it('should update the UI when the store changes', () => {
+    mockAllTodosSelector.setResult(TODOS.slice(0, 2));
+    mockStore.refreshState();
+    fixture.detectChanges();
+    const renderedTodos = findElements(fixture, 'todo-item');
+    expect(renderedTodos.length).toBe(2);
   });
 
-  it('should dispatch updateTodo action for not completed todo', () => {
+  it('should dispatch the updateTodo action for a not completed todo', () => {
     const todoToUpdate = TODOS.find((todo) => !todo.done);
 
     const checkbox = findElement(fixture, 'todo-item-checkbox').query(
@@ -99,7 +97,7 @@ describe('TodoListComponent', () => {
     );
   });
 
-  it('should dispatch updateTodo action for completed todo', () => {
+  it('should dispatch the updateTodo action for a completed todo', () => {
     const todoToUpdate = TODOS.find((todo) => todo.done);
 
     click(fixture, 'todo-mark-uncompleted-btn');
@@ -112,6 +110,16 @@ describe('TodoListComponent', () => {
           changes: { ...todoToUpdate, done: false },
         },
       })
+    );
+  });
+
+  it('should dispatch deleteTodo action', () => {
+    const todoToDelete = TODOS[0];
+
+    click(fixture, 'todo-delete-btn');
+    expect(mockStore.dispatch).toHaveBeenCalledTimes(1);
+    expect(mockStore.dispatch).toHaveBeenCalledWith(
+      todoActions.deleteTodo({ todoId: todoToDelete.id })
     );
   });
 });
