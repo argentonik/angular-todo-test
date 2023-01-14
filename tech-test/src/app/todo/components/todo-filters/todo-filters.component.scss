@@ -1,0 +1,31 @@
+.filters {
+  width: 100%;
+  margin-bottom: 40px;
+  position: relative;
+
+  &__field {
+    width: 100%;
+  }
+
+  &__button {
+    width: 100px;
+  }
+
+  &__search {
+    height: 52px;
+    display: flex;
+    width: 100%;
+    margin-bottom: 20px;
+  }
+
+  &__radio-filter {
+    display: flex;
+    gap: 10px;
+  }
+
+  &__reset {
+    position: absolute;
+    right: 0;
+    bottom: -9px;
+  }
+}

@@ -41,6 +41,11 @@ export const todoError = createSelector(
   (state) => state.error
 );
 
+export const todoFilters = createSelector(
+  todoFeatureSelector,
+  (state) => state.filters
+);
+
 const filterTodos = (todos: Todo[], filters: TodoFilters): Todo[] => {
   const input = filters.input.toLowerCase();
 

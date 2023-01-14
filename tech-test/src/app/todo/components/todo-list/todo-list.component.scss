@@ -19,32 +19,6 @@
   }
 }
 
-.filters {
-  width: 100%;
-  margin-bottom: 40px;
-
-  &__field {
-    width: 90%;
-  }
-
-  &__button {
-    width: 100px;
-  }
-
-  &__search {
-    height: 52px;
-    display: flex;
-    width: 100%;
-    gap: 20px;
-    margin-bottom: 20px;
-  }
-
-  &__radio-filter {
-    display: flex;
-    gap: 10px;
-  }
-}
-
 .todo-list {
   display: grid;
   grid-gap: 20px;

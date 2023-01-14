@@ -24,9 +24,10 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { TodoFiltersComponent } from './components/todo-filters/todo-filters.component';
 
 @NgModule({
-  declarations: [TodoListComponent, TodoEditComponent],
+  declarations: [TodoListComponent, TodoEditComponent, TodoFiltersComponent],
   imports: [
     CommonModule,
     RouterModule,

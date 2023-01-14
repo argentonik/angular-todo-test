@@ -15,22 +15,7 @@
   <mat-divider></mat-divider>
 </header>
 
-<form class="filters" *ngIf="showFilters" [formGroup]="filters">
-  <div class="filters__search">
-    <mat-form-field class="filters__field" appearance="fill">
-      <mat-label>Search</mat-label>
-      <input matInput type="text" autocomplete="off" formControlName="input">
-    </mat-form-field>
-
-    <button class="filters__button" mat-raised-button color="primary">Search</button>
-  </div>
-
-  <mat-radio-group class="filters__radio-filter" aria-label="Select an option" color="primary" formControlName="status">
-    <mat-radio-button [value]="todoStatuses.All">All</mat-radio-button>
-    <mat-radio-button [value]="todoStatuses.Completed">Completed</mat-radio-button>
-    <mat-radio-button [value]="todoStatuses.NotCompleted">Not completed</mat-radio-button>
-  </mat-radio-group>
-</form>
+<app-todo-filters *ngIf="showFilters"></app-todo-filters>
 
 <div class="todo-list" *ngIf="todos$ | async as todos">
   <mat-card class="todo-card" *ngFor="let todo of todos" data-testid="todo-item">
