@@ -33,7 +33,7 @@
 </div>
 
 <div class="todo-list" *ngIf="todos$ | async as todos">
-  <mat-card class="todo-card" *ngFor="let todo of todos">
+  <mat-card class="todo-card" *ngFor="let todo of todos" data-testid="todo-item">
     <mat-card-title class="todo-card__title">
       <mat-checkbox class="todo-card__checkbox"
                     color="primary"
@@ -44,14 +44,12 @@
       <mat-icon color="primary"
                 *ngIf="todo.done"
                 [matTooltip]="'Completed ' + todo.done">done</mat-icon>
-      <span [class.todo-card__completed-label]="todo.done">{{todo.label}}</span>
+      <span [class.todo-card__completed-label]="todo.done" data-testid="todo-label">{{todo.label}}</span>
     </mat-card-title>
 
-    <mat-card-subtitle>{{todo.category}}</mat-card-subtitle>
+    <mat-card-subtitle data-testid="todo-category">{{todo.category}}</mat-card-subtitle>
 
-    <mat-card-content>
-      {{todo.description}}
-    </mat-card-content>
+    <mat-card-content data-testid="todo-description">{{todo.description}}</mat-card-content>
 
     <mat-card-actions class="todo-card__actions">
       <button mat-button color="disabled" (click)="deleteTodo(todo.id)" matTooltip="Delete"

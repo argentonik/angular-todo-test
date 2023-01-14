@@ -26,7 +26,7 @@ export class TodoListComponent implements OnInit, OnDestroy {
   public todos$: Observable<Todo[]> = this.store.select(getAllTodos);
   public todoLoading$ = this.store.select(todoLoading).pipe(debounceTime(100));
   public todoError$ = this.store.select(todoError);
-  public showFilters = true;
+  public showFilters = false;
   private destroy$ = new Subject<void>();
 
   constructor(private store: Store, private snackBar: MatSnackBar) {}

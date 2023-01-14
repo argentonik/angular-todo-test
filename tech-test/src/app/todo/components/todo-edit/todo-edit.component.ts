@@ -30,6 +30,7 @@ export class TodoEditComponent {
     ]),
     done: new FormControl(false),
   });
+
   public todo$: Observable<Todo | {}> = this.route.params.pipe(
     concatMap((params) => {
       return params.id ? this.store.select(getTodoById(params.id)) : of({});
