@@ -2,11 +2,18 @@ import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
 import { Todo } from '../models/todo.interface';
 import { todoActions } from './todo.actions';
 import { createReducer, on } from '@ngrx/store';
+import { TodoStatusEnum } from '../models/todo-status.enum';
+
+export interface TodoFilters {
+  input: string;
+  status: TodoStatusEnum;
+}
 
 export interface TodoState extends EntityState<Todo> {
   todosLoaded: boolean;
   todoLoading: number | string;
   error: string;
+  filters: TodoFilters;
 }
 
 export const adapter: EntityAdapter<Todo> = createEntityAdapter<Todo>();
@@ -15,6 +22,7 @@ export const initialState = adapter.getInitialState({
   todosLoaded: false,
   todoLoading: null,
   error: null,
+  filters: null,
 });
 
 export const todoReducer = createReducer(
@@ -66,6 +74,14 @@ export const todoReducer = createReducer(
 
   on(todoActions.failure, (state, action) => {
     return { ...state, error: action.payload, todoLoading: null };
+  }),
+
+  on(todoActions.applyFilters, (state, action) => {
+    return { ...state, filters: { ...action.filters } };
+  }),
+
+  on(todoActions.clearFilters, (state) => {
+    return { ...state, filters: null };
   })
 );
 

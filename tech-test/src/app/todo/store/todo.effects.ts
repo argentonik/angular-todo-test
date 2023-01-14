@@ -71,4 +71,14 @@ export class TodoEffects {
       )
     )
   );
+
+  applyTodoFilters$ = createEffect(
+    () => this.actions$.pipe(ofType(todoActions.applyFilters)),
+    { dispatch: false }
+  );
+
+  clearTodoFilters$ = createEffect(
+    () => this.actions$.pipe(ofType(todoActions.clearFilters)),
+    { dispatch: false }
+  );
 }

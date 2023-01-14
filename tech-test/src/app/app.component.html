@@ -4,7 +4,7 @@
 
 <div class="app-wrapper">
   <mat-card class="app-content">
-    <mat-spinner class="app-loader" *ngIf="loading"></mat-spinner>
+    <mat-spinner class="app-loader" *ngIf="loading" [diameter]="40"></mat-spinner>
     <router-outlet></router-outlet>
   </mat-card>
 </div>

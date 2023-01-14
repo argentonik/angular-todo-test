@@ -8,13 +8,19 @@ import { Observable, Subject } from 'rxjs';
 import { Todo } from '../../models/todo.interface';
 import { Store } from '@ngrx/store';
 import {
-  getAllTodos,
+  getFilteredTodos,
   todoError,
   todoLoading,
 } from '../../store/todo.selectors';
-import { todoActions, updateTodo } from '../../store/todo.actions';
+import {
+  applyFilters,
+  todoActions,
+  updateTodo,
+} from '../../store/todo.actions';
 import { debounceTime, takeUntil } from 'rxjs/operators';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { FormControl, FormGroup } from '@angular/forms';
+import { TodoStatusEnum } from '../../models/todo-status.enum';
 
 @Component({
   selector: 'app-todo-list',
@@ -23,10 +29,17 @@ import { MatSnackBar } from '@angular/material/snack-bar';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TodoListComponent implements OnInit, OnDestroy {
-  public todos$: Observable<Todo[]> = this.store.select(getAllTodos);
+  public todos$: Observable<Todo[]> = this.store.select(getFilteredTodos);
   public todoLoading$ = this.store.select(todoLoading).pipe(debounceTime(100));
   public todoError$ = this.store.select(todoError);
-  public showFilters = false;
+
+  public showFilters = true;
+  public readonly todoStatuses = TodoStatusEnum;
+  public filters = new FormGroup({
+    input: new FormControl(''),
+    status: new FormControl(this.todoStatuses.All),
+  });
+
   private destroy$ = new Subject<void>();
 
   constructor(private store: Store, private snackBar: MatSnackBar) {}
@@ -38,6 +51,12 @@ export class TodoListComponent implements OnInit, OnDestroy {
       }
       this.snackBar.open(err, 'Close', { duration: 3000 });
     });
+
+    this.filters.valueChanges
+      .pipe(debounceTime(300), takeUntil(this.destroy$))
+      .subscribe((filters) => {
+        this.store.dispatch(applyFilters({ filters }));
+      });
   }
 
   public ngOnDestroy() {

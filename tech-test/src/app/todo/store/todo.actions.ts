@@ -1,6 +1,7 @@
 import { createAction, props } from '@ngrx/store';
 import { Todo } from '../models/todo.interface';
 import { Update } from '@ngrx/entity';
+import { TodoFilters } from './todo.reducers';
 
 export const getTodos = createAction('[Todos] Get todos');
 
@@ -49,6 +50,13 @@ export const failure = createAction(
   props<{ payload: string }>()
 );
 
+export const applyFilters = createAction(
+  '[Todos] Apply filters',
+  props<{ filters: TodoFilters }>()
+);
+
+export const clearFilters = createAction('[Todos] Clear filters');
+
 export const todoActions = {
   getTodos,
   todosLoaded,
@@ -60,4 +68,6 @@ export const todoActions = {
   deleteTodo,
   deleteTodoSuccess,
   failure,
+  applyFilters,
+  clearFilters,
 };
