@@ -40,7 +40,9 @@
                     matTooltip="Complete"
                     *ngIf="!todo.done"
                     [checked]="todo.done"
-                    (change)="updateTodoStatus(todo, true)"></mat-checkbox>
+                    (change)="updateTodoStatus(todo, true)"
+                    data-testid="todo-item-checkbox"
+      ></mat-checkbox>
       <mat-icon color="primary"
                 *ngIf="todo.done"
                 [matTooltip]="'Completed ' + todo.done">done</mat-icon>
@@ -53,15 +55,16 @@
 
     <mat-card-actions class="todo-card__actions">
       <button mat-button color="disabled" (click)="deleteTodo(todo.id)" matTooltip="Delete"
-              [disabled]="(todoLoading$ | async) == todo.id">
+              [disabled]="(todoLoading$ | async) == todo.id" data-testid="todo-delete-btn">
         <mat-icon>delete</mat-icon>
       </button>
       <button mat-button color="primary" [routerLink]="['/todo/edit', todo.id]" matTooltip="Edit"
-              [disabled]="(todoLoading$ | async) == todo.id">
+              [disabled]="(todoLoading$ | async) == todo.id" data-testid="todo-edit-btn">
         <mat-icon>edit</mat-icon>
       </button>
       <button class="todo-card__btn" mat-button color="primary" matTooltip="Mark uncompleted"
-              [disabled]="(todoLoading$ | async) == todo.id" *ngIf="todo.done" (click)="updateTodoStatus(todo, false)">
+              [disabled]="(todoLoading$ | async) == todo.id" *ngIf="todo.done" (click)="updateTodoStatus(todo, false)"
+              data-testid="todo-mark-uncompleted-btn">
         <mat-icon>replay</mat-icon>
       </button>
     </mat-card-actions>
