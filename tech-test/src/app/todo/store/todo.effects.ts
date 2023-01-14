@@ -17,8 +17,14 @@ export class TodoEffects {
   getTodos$ = createEffect(() =>
     this.actions$.pipe(
       ofType(todoActions.getTodos),
-      concatMap(() => this.todoService.getAll()),
-      map((todos) => todoActions.todosLoaded({ todos }))
+      concatMap(() =>
+        this.todoService.getAll().pipe(
+          map((todos) => todoActions.todosLoaded({ todos })),
+          catchError((error) => {
+            return of(todoActions.failure({ payload: error.message }));
+          })
+        )
+      )
     )
   );
 

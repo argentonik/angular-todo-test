@@ -18,6 +18,7 @@ describe('TodoEffects', () => {
     'update',
     'delete',
   ]);
+  const errorMessage = 'Error message';
   let actions$: Observable<any>;
   let effects: TodoEffects;
   let store: MockStore<any>;
@@ -73,6 +74,19 @@ describe('TodoEffects', () => {
         expectObservable(effects.getTodos$).toBe('--b', { b: outcome });
       });
     });
+
+    it('should handle getTodos and return a failure action', () => {
+      const action = todoActions.getTodos();
+      const outcome = todoActions.failure({ payload: errorMessage });
+
+      testScheduler.run(({ hot, cold, expectObservable }) => {
+        actions$ = hot('-a', { a: action });
+        const response = cold('-#|', {}, { message: errorMessage });
+        todoService.getAll.and.returnValue(response);
+
+        expectObservable(effects.getTodos$).toBe('--b', { b: outcome });
+      });
+    });
   });
 
   describe('createTodo$', () => {
@@ -84,6 +98,20 @@ describe('TodoEffects', () => {
       testScheduler.run(({ hot, cold, expectObservable }) => {
         actions$ = hot('-a', { a: action });
         const response = cold('-b|', { b: todo });
+        todoService.create.and.returnValue(response);
+
+        expectObservable(effects.createTodo$).toBe('--b', { b: outcome });
+      });
+    });
+
+    it('should handle createTodo and return a failure action', () => {
+      const todo = TODO;
+      const action = todoActions.createTodo({ todo });
+      const outcome = todoActions.failure({ payload: errorMessage });
+
+      testScheduler.run(({ hot, cold, expectObservable }) => {
+        actions$ = hot('-a', { a: action });
+        const response = cold('-#|', {}, { message: errorMessage });
         todoService.create.and.returnValue(response);
 
         expectObservable(effects.createTodo$).toBe('--b', { b: outcome });
@@ -106,6 +134,21 @@ describe('TodoEffects', () => {
         expectObservable(effects.updateTodo$).toBe('--b', { b: outcome });
       });
     });
+
+    it('should handle updateTodo and return a failure action', () => {
+      const todo = { ...TODO, label: 'New label' };
+      const update = { id: TODO.id, changes: todo };
+      const action = todoActions.updateTodo({ update });
+      const outcome = todoActions.failure({ payload: errorMessage });
+
+      testScheduler.run(({ hot, cold, expectObservable }) => {
+        actions$ = hot('-a', { a: action });
+        const response = cold('-#|', {}, { message: errorMessage });
+        todoService.update.and.returnValue(response);
+
+        expectObservable(effects.updateTodo$).toBe('--b', { b: outcome });
+      });
+    });
   });
 
   describe('deleteTodo$', () => {
@@ -116,6 +159,19 @@ describe('TodoEffects', () => {
       testScheduler.run(({ hot, cold, expectObservable }) => {
         actions$ = hot('-a', { a: action });
         const response = cold('-b|', { b: null });
+        todoService.delete.and.returnValue(response);
+
+        expectObservable(effects.deleteTodo$).toBe('--b', { b: outcome });
+      });
+    });
+
+    it('should handle deleteTodo and return a failure action', () => {
+      const action = todoActions.deleteTodo({ todoId: TODO.id });
+      const outcome = todoActions.failure({ payload: errorMessage });
+
+      testScheduler.run(({ hot, cold, expectObservable }) => {
+        actions$ = hot('-a', { a: action });
+        const response = cold('-#|', {}, { message: errorMessage });
         todoService.delete.and.returnValue(response);
 
         expectObservable(effects.deleteTodo$).toBe('--b', { b: outcome });
