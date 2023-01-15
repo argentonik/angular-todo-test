@@ -58,6 +58,9 @@ export class TodoFiltersComponent implements OnInit, OnDestroy {
 
   public resetFilters(): void {
     this.store.dispatch(clearFilters());
-    this.filters.patchValue({ input: '', status: TodoStatusEnum.All });
+    this.filters.patchValue(
+      { input: '', status: TodoStatusEnum.All },
+      { emitEvent: false }
+    );
   }
 }

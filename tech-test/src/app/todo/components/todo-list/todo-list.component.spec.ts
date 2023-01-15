@@ -56,7 +56,6 @@ describe('TodoListComponent', () => {
 
     mockStore = TestBed.get(Store);
     mockAllTodosSelector = mockStore.overrideSelector(getFilteredTodos, TODOS);
-    spyOn(mockStore, 'dispatch').and.callThrough();
 
     fixture.detectChanges();
   });
@@ -127,6 +126,7 @@ describe('TodoListComponent', () => {
   });
 
   it('should dispatch the updateTodo action for a not completed todo', () => {
+    spyOn(mockStore, 'dispatch').and.callThrough();
     const todoToUpdate = TODOS.find((todo) => !todo.done);
 
     const checkbox = findElement(fixture, 'todo-item-checkbox').query(
@@ -149,6 +149,7 @@ describe('TodoListComponent', () => {
   });
 
   it('should dispatch the updateTodo action for a completed todo', () => {
+    spyOn(mockStore, 'dispatch').and.callThrough();
     const todoToUpdate = TODOS.find((todo) => todo.done);
 
     click(fixture, 'todo-mark-uncompleted-btn');
@@ -165,6 +166,7 @@ describe('TodoListComponent', () => {
   });
 
   it('should dispatch deleteTodo action', () => {
+    spyOn(mockStore, 'dispatch').and.callThrough();
     const todoToDelete = TODOS[0];
 
     click(fixture, 'todo-delete-btn');
