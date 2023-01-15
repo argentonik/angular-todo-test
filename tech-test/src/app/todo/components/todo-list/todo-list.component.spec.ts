@@ -102,6 +102,22 @@ describe('TodoListComponent', () => {
     expect(filters).toBeNull();
   });
 
+  it('should navigate to the create page', () => {
+    const addTodoBtnLink = findElement(
+      fixture,
+      'todo-add-btn'
+    ).nativeElement.getAttribute('routerLink');
+    expect(addTodoBtnLink).toEqual('create');
+  });
+
+  it('should navigate to the edit page', () => {
+    const editTodoBtnLink = findElement(
+      fixture,
+      'todo-edit-btn'
+    ).nativeElement.getAttribute('ng-reflect-router-link');
+    expect(editTodoBtnLink).toBe('/todo/edit,1');
+  });
+
   it('should update the UI when the store changes', () => {
     mockAllTodosSelector.setResult(TODOS.slice(0, 2));
     mockStore.refreshState();
