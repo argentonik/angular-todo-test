@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { TodoFiltersComponent } from './todo-filters.component';
+import { provideMockStore } from '@ngrx/store/testing';
 
 describe('TodoFiltersComponent', () => {
   let component: TodoFiltersComponent;
@@ -8,9 +9,9 @@ describe('TodoFiltersComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ TodoFiltersComponent ]
-    })
-    .compileComponents();
+      declarations: [TodoFiltersComponent],
+      providers: [provideMockStore()],
+    }).compileComponents();
   });
 
   beforeEach(() => {
