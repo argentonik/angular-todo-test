@@ -16,6 +16,7 @@ import {
 import { todoActions, updateTodo } from '../../store/todo.actions';
 import { debounceTime, take, takeUntil } from 'rxjs/operators';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-todo-list',
@@ -33,7 +34,11 @@ export class TodoListComponent implements OnInit, OnDestroy {
 
   private destroy$ = new Subject<void>();
 
-  constructor(private store: Store, private snackBar: MatSnackBar) {}
+  constructor(
+    private store: Store,
+    private snackBar: MatSnackBar,
+    private datePipe: DatePipe
+  ) {}
 
   public ngOnInit() {
     this.todoError$.pipe(takeUntil(this.destroy$)).subscribe((err) => {
@@ -64,7 +69,10 @@ export class TodoListComponent implements OnInit, OnDestroy {
           id: todo.id,
           changes: {
             ...todo,
-            done: status === true ? new Date().toUTCString() : status,
+            done:
+              status === true
+                ? this.datePipe.transform(new Date(), 'dd-MM-yyyy')
+                : status,
           },
         },
       })

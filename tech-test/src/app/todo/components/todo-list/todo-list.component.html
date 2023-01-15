@@ -24,7 +24,7 @@
                     color="primary"
                     matTooltip="Complete"
                     *ngIf="!todo.done"
-                    [checked]="todo.done"
+                    [checked]="!!todo.done"
                     (change)="updateTodoStatus(todo, true)"
                     data-testid="todo-item-checkbox"
       ></mat-checkbox>
@@ -39,7 +39,7 @@
     <mat-card-content data-testid="todo-description">{{todo.description}}</mat-card-content>
 
     <mat-card-actions class="todo-card__actions">
-      <button mat-button color="disabled" (click)="deleteTodo(todo.id)" matTooltip="Delete"
+      <button mat-button (click)="deleteTodo(todo.id)" matTooltip="Delete"
               [disabled]="(todoLoading$ | async) == todo.id" data-testid="todo-delete-btn">
         <mat-icon>delete</mat-icon>
       </button>
@@ -57,5 +57,11 @@
     <mat-card-footer *ngIf="(todoLoading$ | async) == todo.id">
       <mat-progress-bar mode="indeterminate"></mat-progress-bar>
     </mat-card-footer>
+  </mat-card>
+
+  <mat-card *ngIf="!todos.length">
+    <mat-card-content>
+      <p>There are no todos</p>
+    </mat-card-content>
   </mat-card>
 </div>
