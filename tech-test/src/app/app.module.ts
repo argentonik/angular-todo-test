@@ -12,7 +12,7 @@ import { EffectsModule } from '@ngrx/effects';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatCardModule } from '@angular/material/card';
-import { DatePipe } from '@angular/common';
+import { ENVIRONMENT } from './shared/utils/tokens';
 
 @NgModule({
   declarations: [AppComponent],
@@ -28,7 +28,7 @@ import { DatePipe } from '@angular/common';
     MatToolbarModule,
     MatCardModule,
   ],
-  providers: [HttpClient, DatePipe],
+  providers: [HttpClient, { provide: ENVIRONMENT, useValue: environment }],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

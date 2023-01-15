@@ -58,11 +58,11 @@ export class TodoListComponent implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 
-  public toggleFilters() {
+  public toggleFilters(): void {
     this.showFilters = !this.showFilters;
   }
 
-  public updateTodoStatus(todo: Todo, status: boolean) {
+  public updateTodoStatus(todo: Todo, status: boolean): void {
     this.store.dispatch(
       updateTodo({
         update: {
@@ -79,7 +79,7 @@ export class TodoListComponent implements OnInit, OnDestroy {
     );
   }
 
-  public deleteTodo(todoId: number) {
+  public deleteTodo(todoId: number): void {
     this.store.dispatch(todoActions.deleteTodo({ todoId }));
   }
 }

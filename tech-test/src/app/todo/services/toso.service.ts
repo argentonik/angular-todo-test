@@ -1,13 +1,18 @@
 import { HttpClient } from '@angular/common/http';
 import { Todo } from '../models/todo.interface';
 import { Observable } from 'rxjs';
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
+import { ENVIRONMENT } from '../../shared/utils/tokens';
+import { Environment } from '../../../environments/environment';
 
 @Injectable()
 export class TodoService {
-  private readonly API_URL = 'http://localhost:3000';
+  private readonly API_URL = `${this.environment.apiUrl}`;
 
-  constructor(private http: HttpClient) {}
+  constructor(
+    private http: HttpClient,
+    @Inject(ENVIRONMENT) private environment: Environment
+  ) {}
 
   public getAll(): Observable<Todo[]> {
     return this.http.get<Todo[]>(`${this.API_URL}/tasks`);
