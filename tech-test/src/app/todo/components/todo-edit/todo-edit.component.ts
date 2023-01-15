@@ -21,13 +21,11 @@ export class TodoEditComponent {
   public todoForm = new FormGroup({
     label: new FormControl('', [
       Validators.required,
-      Validators.minLength(1),
       Validators.maxLength(128),
     ]),
     category: new FormControl('', [Validators.maxLength(128)]),
     description: new FormControl('', [
       Validators.required,
-      Validators.minLength(1),
       Validators.maxLength(1024),
     ]),
     done: new FormControl(false),
@@ -53,6 +51,7 @@ export class TodoEditComponent {
 
   public submit(todoId: string): void {
     if (this.todoForm.invalid) {
+      this.todoForm.markAllAsTouched();
       return;
     }
 
