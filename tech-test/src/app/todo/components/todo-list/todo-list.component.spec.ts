@@ -13,7 +13,7 @@ import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { TodoState } from '../../store/todo.reducers';
 import { MemoizedSelector, Store } from '@ngrx/store';
 import { Todo } from '../../models/todo.interface';
-import { getAllTodos } from '../../store/todo.selectors';
+import { getFilteredTodos } from '../../store/todo.selectors';
 import { TODOS } from '../../tests/todos.mock';
 import { click, findElement } from '../../tests/helpers';
 import { todoActions } from '../../store/todo.actions';
@@ -44,7 +44,7 @@ describe('TodoListComponent', () => {
     component = fixture.componentInstance;
 
     mockStore = TestBed.get(Store);
-    mockAllTodosSelector = mockStore.overrideSelector(getAllTodos, TODOS);
+    mockAllTodosSelector = mockStore.overrideSelector(getFilteredTodos, TODOS);
     spyOn(mockStore, 'dispatch').and.callThrough();
 
     fixture.detectChanges();
