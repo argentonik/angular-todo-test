@@ -81,6 +81,27 @@ describe('TodoListComponent', () => {
     expect(renderedTodo.description).toBe(mockTodo.description);
   });
 
+  it('should hide filters by default', () => {
+    const filters = findElement(fixture, 'filters');
+    expect(filters).toBeNull();
+  });
+
+  it('should show switch filters on click', () => {
+    click(fixture, 'filters-switch-btn');
+    fixture.detectChanges();
+    const filters = findElement(fixture, 'filters');
+    expect(filters).toBeTruthy();
+  });
+
+  it('should show hide filters on click', () => {
+    click(fixture, 'filters-switch-btn');
+    fixture.detectChanges();
+    click(fixture, 'filters-switch-btn');
+    fixture.detectChanges();
+    const filters = findElement(fixture, 'filters');
+    expect(filters).toBeNull();
+  });
+
   it('should update the UI when the store changes', () => {
     mockAllTodosSelector.setResult(TODOS.slice(0, 2));
     mockStore.refreshState();

@@ -4,7 +4,8 @@
 
     <div class="todo-header__actions">
       <button class="todo-header__action" mat-fab color="primary"
-              [matTooltip]="showFilters ? 'Hide filters' : 'Filters'" (click)="toggleFilters()">
+              [matTooltip]="showFilters ? 'Hide filters' : 'Filters'" (click)="toggleFilters()"
+              data-testid="filters-switch-btn">
         <mat-icon>filter_list</mat-icon>
       </button>
       <button class="todo-header__action" mat-fab color="primary" routerLink="create" matTooltip="Create Todo">
@@ -15,7 +16,7 @@
   <mat-divider></mat-divider>
 </header>
 
-<app-todo-filters *ngIf="showFilters"></app-todo-filters>
+<app-todo-filters *ngIf="showFilters" data-testid="filters"></app-todo-filters>
 
 <div class="todo-list" *ngIf="todos$ | async as todos">
   <mat-card class="todo-card" *ngFor="let todo of todos" data-testid="todo-item">
