@@ -2,12 +2,13 @@ import {
   ChangeDetectionStrategy,
   Component,
   Inject,
+  OnDestroy,
   OnInit,
 } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { Observable, of } from 'rxjs';
-import { concatMap, debounceTime, tap } from 'rxjs/operators';
+import { of, Subject } from 'rxjs';
+import { concatMap, debounceTime, takeUntil, tap } from 'rxjs/operators';
 import { Todo } from '../../models/todo.interface';
 import { createTodo, updateTodo } from '../../store/todo.actions';
 import { Store } from '@ngrx/store';
@@ -22,8 +23,8 @@ import { IAppConfig } from '../../../app.config';
   styleUrls: ['./todo-edit.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class TodoEditComponent implements OnInit {
-  public todo: Todo | {} = {};
+export class TodoEditComponent implements OnInit, OnDestroy {
+  public todo: Todo = {} as Todo;
   public todoForm = new FormGroup({
     label: new FormControl('', [
       Validators.required,
@@ -37,7 +38,7 @@ export class TodoEditComponent implements OnInit {
     done: new FormControl(false),
   });
 
-  public todo$: Observable<Todo | {}> = this.route.params.pipe(
+  public todo$ = this.route.params.pipe(
     concatMap((params) => {
       return params.id ? this.store.select(getTodoById(params.id)) : of({});
     }),
@@ -48,6 +49,7 @@ export class TodoEditComponent implements OnInit {
   public todoLoading$ = this.store
     .select(todoLoading)
     .pipe(debounceTime(this.config.loadingDebounceTime));
+  private destroy$ = new Subject<void>();
 
   constructor(
     @Inject(APP_CONFIG) private config: IAppConfig,
@@ -56,9 +58,14 @@ export class TodoEditComponent implements OnInit {
   ) {}
 
   public ngOnInit() {
-    this.todo$.subscribe((todo) => {
-      this.todo = todo;
+    this.todo$.pipe(takeUntil(this.destroy$)).subscribe((todo) => {
+      this.todo = todo as Todo;
     });
+  }
+
+  public ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   public submit(todoId: string): void {

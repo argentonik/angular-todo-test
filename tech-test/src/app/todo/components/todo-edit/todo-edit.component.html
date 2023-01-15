@@ -46,7 +46,7 @@
 <div class="actions">
   <button class="actions__button" mat-raised-button routerLink="/todo"
           [disabled]="!!(todoLoading$ | async)">Cancel</button>
-  <button class="actions__button" mat-raised-button color="primary" (click)="submit(todo.id)"
+  <button class="actions__button" mat-raised-button color="primary" (click)="submit($any(todo.id))"
           data-testid="submit-btn" [disabled]="!!(todoLoading$ | async)">
     {{todo.id ? 'Update' : 'Create'}}
   </button>
