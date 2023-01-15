@@ -1,55 +1,53 @@
-<ng-container *ngIf="todo$ | async as todo">
-  <header class="todo_header">
-    <div class="todo-header__content">
-      <h1>{{todo.id ? 'Editing "' + todo.label + '"' : 'Creating Todo'}}</h1>
-    </div>
-    <mat-divider></mat-divider>
-  </header>
-
-  <form class="todo-form" [formGroup]="todoForm">
-    <mat-form-field class="field" appearance="fill">
-      <mat-label>Title*</mat-label>
-      <input matInput type="text" formControlName="label" autocomplete="off">
-
-      <mat-error *ngIf="todoForm.controls['label'].touched &&
-        todoForm.controls['label'].hasError('required')">The field is required</mat-error>
-      <mat-error *ngIf="todoForm.controls['label'].touched &&
-        todoForm.controls['label'].hasError('maxlength')">
-        The field length should be less than {{todoForm.controls['label'].errors.maxlength.requiredLength}}
-      </mat-error>
-    </mat-form-field>
-
-    <mat-form-field class="field" appearance="fill">
-      <mat-label>Category</mat-label>
-      <input matInput type="text" formControlName="category" autocomplete="off">
-
-      <mat-error *ngIf="todoForm.controls['category'].touched &&
-        todoForm.controls['category'].hasError('maxlength')">
-        The field length should be less than {{todoForm.controls['category'].errors.maxlength.requiredLength}}
-      </mat-error>
-    </mat-form-field>
-
-    <mat-form-field class="field" appearance="fill">
-      <mat-label>Description*</mat-label>
-      <textarea matInput type="text" formControlName="description" autocomplete="off"></textarea>
-
-      <mat-error *ngIf="todoForm.controls['description'].touched &&
-        todoForm.controls['description'].hasError('required')">The field is required</mat-error>
-      <mat-error *ngIf="todoForm.controls['description'].touched &&
-        todoForm.controls['description'].hasError('maxlength')">
-        The field length should be less than {{todoForm.controls['description'].errors.maxlength.requiredLength}}
-      </mat-error>
-    </mat-form-field>
-
-    <mat-checkbox class="field" formControlName="done" color="primary">Completed</mat-checkbox>
-  </form>
-
-  <div class="actions">
-    <button class="actions__button" mat-raised-button routerLink="/todo"
-            [disabled]="!!(todoLoading$ | async)">Cancel</button>
-    <button class="actions__button" mat-raised-button color="primary" (click)="submit(todo.id)"
-            [disabled]="!!(todoLoading$ | async)">
-      {{todo.id ? 'Update' : 'Create'}}
-    </button>
+<header class="todo_header" data-testid="bla">
+  <div class="todo-header__content">
+    <h1 data-testid="header">{{todo.id ? 'Editing "' + todo.label + '"' : 'Creating Todo'}}</h1>
   </div>
-</ng-container>
+  <mat-divider></mat-divider>
+</header>
+
+<form class="todo-form" [formGroup]="todoForm">
+  <mat-form-field class="field" appearance="fill">
+    <mat-label>Title*</mat-label>
+    <input matInput type="text" formControlName="label" autocomplete="off">
+
+    <mat-error *ngIf="todoForm.controls['label'].touched &&
+      todoForm.controls['label'].hasError('required')">The field is required</mat-error>
+    <mat-error *ngIf="todoForm.controls['label'].touched &&
+      todoForm.controls['label'].hasError('maxlength')">
+      The field length should be less than {{todoForm.controls['label'].errors.maxlength.requiredLength}}
+    </mat-error>
+  </mat-form-field>
+
+  <mat-form-field class="field" appearance="fill">
+    <mat-label>Category</mat-label>
+    <input matInput type="text" formControlName="category" autocomplete="off">
+
+    <mat-error *ngIf="todoForm.controls['category'].touched &&
+      todoForm.controls['category'].hasError('maxlength')">
+      The field length should be less than {{todoForm.controls['category'].errors.maxlength.requiredLength}}
+    </mat-error>
+  </mat-form-field>
+
+  <mat-form-field class="field" appearance="fill">
+    <mat-label>Description*</mat-label>
+    <textarea matInput type="text" formControlName="description" autocomplete="off"></textarea>
+
+    <mat-error *ngIf="todoForm.controls['description'].touched &&
+      todoForm.controls['description'].hasError('required')">The field is required</mat-error>
+    <mat-error *ngIf="todoForm.controls['description'].touched &&
+      todoForm.controls['description'].hasError('maxlength')">
+      The field length should be less than {{todoForm.controls['description'].errors.maxlength.requiredLength}}
+    </mat-error>
+  </mat-form-field>
+
+  <mat-checkbox class="field" formControlName="done" color="primary">Completed</mat-checkbox>
+</form>
+
+<div class="actions">
+  <button class="actions__button" mat-raised-button routerLink="/todo"
+          [disabled]="!!(todoLoading$ | async)">Cancel</button>
+  <button class="actions__button" mat-raised-button color="primary" (click)="submit(todo.id)"
+          data-testid="submit-btn" [disabled]="!!(todoLoading$ | async)">
+    {{todo.id ? 'Update' : 'Create'}}
+  </button>
+</div>

@@ -1,4 +1,9 @@
-import { ChangeDetectionStrategy, Component, Inject } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Inject,
+  OnInit,
+} from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Observable, of } from 'rxjs';
@@ -17,7 +22,8 @@ import { IAppConfig } from '../../../app.config';
   styleUrls: ['./todo-edit.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class TodoEditComponent {
+export class TodoEditComponent implements OnInit {
+  public todo: Todo | {} = {};
   public todoForm = new FormGroup({
     label: new FormControl('', [
       Validators.required,
@@ -48,6 +54,12 @@ export class TodoEditComponent {
     private route: ActivatedRoute,
     private store: Store
   ) {}
+
+  public ngOnInit() {
+    this.todo$.subscribe((todo) => {
+      this.todo = todo;
+    });
+  }
 
   public submit(todoId: string): void {
     if (this.todoForm.invalid) {
