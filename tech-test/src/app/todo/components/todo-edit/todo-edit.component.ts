@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Observable, of } from 'rxjs';
@@ -8,6 +8,8 @@ import { createTodo, updateTodo } from '../../store/todo.actions';
 import { Store } from '@ngrx/store';
 import { getTodoById, todoLoading } from '../../store/todo.selectors';
 import * as uuid from 'uuid';
+import { APP_CONFIG } from '../../../shared/utils/tokens';
+import { IAppConfig } from '../../../app.config';
 
 @Component({
   selector: 'app-todo-edit',
@@ -39,11 +41,17 @@ export class TodoEditComponent {
       this.todoForm.patchValue(todo);
     })
   );
-  public todoLoading$ = this.store.select(todoLoading).pipe(debounceTime(100));
+  public todoLoading$ = this.store
+    .select(todoLoading)
+    .pipe(debounceTime(this.config.loadingDebounceTime));
 
-  constructor(private route: ActivatedRoute, private store: Store) {}
+  constructor(
+    @Inject(APP_CONFIG) private config: IAppConfig,
+    private route: ActivatedRoute,
+    private store: Store
+  ) {}
 
-  public submit(todoId: string) {
+  public submit(todoId: string): void {
     if (this.todoForm.invalid) {
       return;
     }
