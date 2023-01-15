@@ -36,7 +36,7 @@ describe('TodoEditComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should dispatch createTodo action', () => {
+  it('should dispatch submit action', () => {
     spyOn(mockStore, 'dispatch').and.callThrough();
     const todo: Todo = {
       id: anything() as any,
@@ -53,5 +53,12 @@ describe('TodoEditComponent', () => {
     expect(mockStore.dispatch).toHaveBeenCalledWith(
       todoActions.createTodo({ todo })
     );
+  });
+
+  it(`shouldn't dispatch submit action with wrong data`, () => {
+    spyOn(mockStore, 'dispatch').and.callThrough();
+    click(fixture, 'submit-btn');
+
+    expect(mockStore.dispatch).toHaveBeenCalledTimes(0);
   });
 });
