@@ -2,6 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { TodoFiltersComponent } from './todo-filters.component';
 import { provideMockStore } from '@ngrx/store/testing';
+import { APP_CONFIG } from '../../../shared/utils/tokens';
 
 describe('TodoFiltersComponent', () => {
   let component: TodoFiltersComponent;
@@ -10,7 +11,13 @@ describe('TodoFiltersComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [TodoFiltersComponent],
-      providers: [provideMockStore()],
+      providers: [
+        provideMockStore(),
+        {
+          provide: APP_CONFIG,
+          useValue: {},
+        },
+      ],
     }).compileComponents();
   });
 

@@ -18,12 +18,15 @@ import { TODOS } from '../../tests/todos.mock';
 import { click, findElement } from '../../tests/helpers';
 import { todoActions } from '../../store/todo.actions';
 import { findElements, getElementTextContent } from '../../tests/helpers';
+import { APP_CONFIG } from '../../../shared/utils/tokens';
+import { DatePipe } from '@angular/common';
 
 describe('TodoListComponent', () => {
   let component: TodoListComponent;
   let fixture: ComponentFixture<TodoListComponent>;
   let mockStore: MockStore<TodoState>;
   let mockAllTodosSelector: MemoizedSelector<TodoState, Todo[]>;
+  let datePipe: DatePipe;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -37,11 +40,16 @@ describe('TodoListComponent', () => {
         MatCheckboxModule,
         MatTooltipModule,
       ],
-      providers: [provideMockStore()],
+      providers: [
+        DatePipe,
+        provideMockStore(),
+        { provide: APP_CONFIG, useValue: {} },
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(TodoListComponent);
     component = fixture.componentInstance;
+    datePipe = TestBed.inject(DatePipe);
 
     mockStore = TestBed.get(Store);
     mockAllTodosSelector = mockStore.overrideSelector(getFilteredTodos, TODOS);
@@ -91,7 +99,10 @@ describe('TodoListComponent', () => {
       todoActions.updateTodo({
         update: {
           id: todoToUpdate.id,
-          changes: { ...todoToUpdate, done: new Date().toUTCString() },
+          changes: {
+            ...todoToUpdate,
+            done: datePipe.transform(new Date(), 'dd-MM-yyyy'),
+          },
         },
       })
     );
