@@ -1,6 +1,7 @@
 import { initialState, todoReducer, TodoState } from './todo.reducers';
 import { todoActions } from './todo.actions';
 import { TODO, TODOS, TODOS_DICTIONARY } from '../tests/todos.mock';
+import { TodoStatusEnum } from '../models/todo-status.enum';
 
 describe('TodoReducers', () => {
   let state: TodoState;
@@ -121,6 +122,27 @@ describe('TodoReducers', () => {
       expect(result.todoLoading).toBeNull();
       expect(result.error).toBe(payload);
       expect(result.entities).toEqual(TODOS_DICTIONARY);
+    });
+
+    it('on the applyFilters action should be set a correct state', () => {
+      const filters = { input: 'test', status: TodoStatusEnum.Completed };
+      const result = todoReducer(state, todoActions.applyFilters({ filters }));
+
+      expect(result.todosLoaded).toBeTrue();
+      expect(result.todoLoading).toBeNull();
+      expect(result.error).toBeNull();
+      expect(result.entities).toEqual(TODOS_DICTIONARY);
+      expect(result.filters).toEqual(filters);
+    });
+
+    it('on the clearFilters action should be set a correct state', () => {
+      const result = todoReducer(state, todoActions.clearFilters());
+
+      expect(result.todosLoaded).toBeTrue();
+      expect(result.todoLoading).toBeNull();
+      expect(result.error).toBeNull();
+      expect(result.entities).toEqual(TODOS_DICTIONARY);
+      expect(result.filters).toBeNull();
     });
   });
 
