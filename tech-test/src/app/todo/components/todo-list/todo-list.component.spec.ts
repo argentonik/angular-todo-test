@@ -15,9 +15,12 @@ import { MemoizedSelector, Store } from '@ngrx/store';
 import { Todo } from '../../models/todo.interface';
 import { getFilteredTodos } from '../../store/todo.selectors';
 import { TODOS } from '../../tests/todos.mock';
-import { click, findElement } from '../../tests/helpers';
+import { click, findElement } from '../../../shared/tests/helpers';
 import { todoActions } from '../../store/todo.actions';
-import { findElements, getElementTextContent } from '../../tests/helpers';
+import {
+  findElements,
+  getElementTextContent,
+} from '../../../shared/tests/helpers';
 import { APP_CONFIG } from '../../../shared/utils/tokens';
 import { DatePipe } from '@angular/common';
 
