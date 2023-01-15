@@ -1,6 +1,7 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  Inject,
   OnDestroy,
   OnInit,
 } from '@angular/core';
@@ -17,6 +18,8 @@ import { todoActions, updateTodo } from '../../store/todo.actions';
 import { debounceTime, take, takeUntil } from 'rxjs/operators';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { DatePipe } from '@angular/common';
+import { APP_CONFIG } from '../../../shared/utils/tokens';
+import { IAppConfig } from '../../../app.config';
 
 @Component({
   selector: 'app-todo-list',
@@ -27,7 +30,9 @@ import { DatePipe } from '@angular/common';
 export class TodoListComponent implements OnInit, OnDestroy {
   public todos$ = this.store.select(getFilteredTodos);
   public todoFilters$ = this.store.select(todoFilters);
-  public todoLoading$ = this.store.select(todoLoading).pipe(debounceTime(100));
+  public todoLoading$ = this.store
+    .select(todoLoading)
+    .pipe(debounceTime(this.config.loadingDebounceTime));
   public todoError$ = this.store.select(todoError);
 
   public showFilters = false;
@@ -35,6 +40,7 @@ export class TodoListComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
 
   constructor(
+    @Inject(APP_CONFIG) private config: IAppConfig,
     private store: Store,
     private snackBar: MatSnackBar,
     private datePipe: DatePipe
@@ -45,7 +51,9 @@ export class TodoListComponent implements OnInit, OnDestroy {
       if (!err) {
         return;
       }
-      this.snackBar.open(err, 'Close', { duration: 3000 });
+      this.snackBar.open(err, 'Close', {
+        duration: this.config.snackBarDurationTime,
+      });
     });
 
     this.todoFilters$

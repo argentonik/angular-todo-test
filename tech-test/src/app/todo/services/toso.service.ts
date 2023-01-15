@@ -3,7 +3,7 @@ import { Todo } from '../models/todo.interface';
 import { Observable } from 'rxjs';
 import { Inject, Injectable } from '@angular/core';
 import { ENVIRONMENT } from '../../shared/utils/tokens';
-import { Environment } from '../../../environments/environment';
+import { IEnvironment } from '../../../environments/environment';
 
 @Injectable()
 export class TodoService {
@@ -11,7 +11,7 @@ export class TodoService {
 
   constructor(
     private http: HttpClient,
-    @Inject(ENVIRONMENT) private environment: Environment
+    @Inject(ENVIRONMENT) private environment: IEnvironment
   ) {}
 
   public getAll(): Observable<Todo[]> {

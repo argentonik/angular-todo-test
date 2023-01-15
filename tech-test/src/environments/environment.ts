@@ -1,4 +1,4 @@
-export interface Environment {
+export interface IEnvironment {
   production: boolean;
   apiUrl: string;
 }
