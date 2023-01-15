@@ -12,6 +12,8 @@ import { EffectsModule } from '@ngrx/effects';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatCardModule } from '@angular/material/card';
+import { APP_CONFIG, ENVIRONMENT } from './shared/utils/tokens';
+import { AppConfig } from './app.config';
 
 @NgModule({
   declarations: [AppComponent],
@@ -27,7 +29,11 @@ import { MatCardModule } from '@angular/material/card';
     MatToolbarModule,
     MatCardModule,
   ],
-  providers: [HttpClient],
+  providers: [
+    HttpClient,
+    { provide: ENVIRONMENT, useValue: environment },
+    { provide: APP_CONFIG, useValue: AppConfig },
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

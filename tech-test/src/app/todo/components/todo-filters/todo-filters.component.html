@@ -16,7 +16,7 @@
     <mat-radio-button [value]="todoStatuses.NotCompleted">Not completed</mat-radio-button>
   </mat-radio-group>
 
-  <button mat-button class="filters__reset" (click)="resetFilters()">
+  <button mat-button class="filters__reset" (click)="resetFilters()" data-testid="reset-btn">
     <mat-icon color="primary">replay</mat-icon>
     <span>Reset filters</span>
   </button>

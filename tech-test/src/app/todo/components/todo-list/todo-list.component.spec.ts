@@ -15,15 +15,21 @@ import { MemoizedSelector, Store } from '@ngrx/store';
 import { Todo } from '../../models/todo.interface';
 import { getFilteredTodos } from '../../store/todo.selectors';
 import { TODOS } from '../../tests/todos.mock';
-import { click, findElement } from '../../tests/helpers';
+import { click, findElement } from '../../../shared/tests/helpers';
 import { todoActions } from '../../store/todo.actions';
-import { findElements, getElementTextContent } from '../../tests/helpers';
+import {
+  findElements,
+  getElementTextContent,
+} from '../../../shared/tests/helpers';
+import { APP_CONFIG } from '../../../shared/utils/tokens';
+import { DatePipe } from '@angular/common';
 
 describe('TodoListComponent', () => {
   let component: TodoListComponent;
   let fixture: ComponentFixture<TodoListComponent>;
   let mockStore: MockStore<TodoState>;
   let mockAllTodosSelector: MemoizedSelector<TodoState, Todo[]>;
+  let datePipe: DatePipe;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -37,15 +43,19 @@ describe('TodoListComponent', () => {
         MatCheckboxModule,
         MatTooltipModule,
       ],
-      providers: [provideMockStore()],
+      providers: [
+        DatePipe,
+        provideMockStore(),
+        { provide: APP_CONFIG, useValue: {} },
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(TodoListComponent);
     component = fixture.componentInstance;
+    datePipe = TestBed.inject(DatePipe);
 
     mockStore = TestBed.get(Store);
     mockAllTodosSelector = mockStore.overrideSelector(getFilteredTodos, TODOS);
-    spyOn(mockStore, 'dispatch').and.callThrough();
 
     fixture.detectChanges();
   });
@@ -70,6 +80,43 @@ describe('TodoListComponent', () => {
     expect(renderedTodo.description).toBe(mockTodo.description);
   });
 
+  it('should hide filters by default', () => {
+    const filters = findElement(fixture, 'filters');
+    expect(filters).toBeNull();
+  });
+
+  it('should show switch filters on click', () => {
+    click(fixture, 'filters-switch-btn');
+    fixture.detectChanges();
+    const filters = findElement(fixture, 'filters');
+    expect(filters).toBeTruthy();
+  });
+
+  it('should show hide filters on click', () => {
+    click(fixture, 'filters-switch-btn');
+    fixture.detectChanges();
+    click(fixture, 'filters-switch-btn');
+    fixture.detectChanges();
+    const filters = findElement(fixture, 'filters');
+    expect(filters).toBeNull();
+  });
+
+  it('should navigate to the create page', () => {
+    const addTodoBtnLink = findElement(
+      fixture,
+      'todo-add-btn'
+    ).nativeElement.getAttribute('routerLink');
+    expect(addTodoBtnLink).toEqual('create');
+  });
+
+  it('should navigate to the edit page', () => {
+    const editTodoBtnLink = findElement(
+      fixture,
+      'todo-edit-btn'
+    ).nativeElement.getAttribute('ng-reflect-router-link');
+    expect(editTodoBtnLink).toBe('/todo/edit,1');
+  });
+
   it('should update the UI when the store changes', () => {
     mockAllTodosSelector.setResult(TODOS.slice(0, 2));
     mockStore.refreshState();
@@ -79,6 +126,7 @@ describe('TodoListComponent', () => {
   });
 
   it('should dispatch the updateTodo action for a not completed todo', () => {
+    spyOn(mockStore, 'dispatch').and.callThrough();
     const todoToUpdate = TODOS.find((todo) => !todo.done);
 
     const checkbox = findElement(fixture, 'todo-item-checkbox').query(
@@ -91,13 +139,17 @@ describe('TodoListComponent', () => {
       todoActions.updateTodo({
         update: {
           id: todoToUpdate.id,
-          changes: { ...todoToUpdate, done: new Date().toUTCString() },
+          changes: {
+            ...todoToUpdate,
+            done: datePipe.transform(new Date(), 'dd-MM-yyyy'),
+          },
         },
       })
     );
   });
 
   it('should dispatch the updateTodo action for a completed todo', () => {
+    spyOn(mockStore, 'dispatch').and.callThrough();
     const todoToUpdate = TODOS.find((todo) => todo.done);
 
     click(fixture, 'todo-mark-uncompleted-btn');
@@ -114,6 +166,7 @@ describe('TodoListComponent', () => {
   });
 
   it('should dispatch deleteTodo action', () => {
+    spyOn(mockStore, 'dispatch').and.callThrough();
     const todoToDelete = TODOS[0];
 
     click(fixture, 'todo-delete-btn');

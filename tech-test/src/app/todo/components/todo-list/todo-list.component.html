@@ -4,10 +4,12 @@
 
     <div class="todo-header__actions">
       <button class="todo-header__action" mat-fab color="primary"
-              [matTooltip]="showFilters ? 'Hide filters' : 'Filters'" (click)="toggleFilters()">
+              [matTooltip]="showFilters ? 'Hide filters' : 'Filters'" (click)="toggleFilters()"
+              data-testid="filters-switch-btn">
         <mat-icon>filter_list</mat-icon>
       </button>
-      <button class="todo-header__action" mat-fab color="primary" routerLink="create" matTooltip="Create Todo">
+      <button class="todo-header__action" mat-fab color="primary" routerLink="create" matTooltip="Create Todo"
+              data-testid="todo-add-btn">
         <mat-icon>add</mat-icon>
       </button>
     </div>
@@ -15,7 +17,7 @@
   <mat-divider></mat-divider>
 </header>
 
-<app-todo-filters *ngIf="showFilters"></app-todo-filters>
+<app-todo-filters *ngIf="showFilters" data-testid="filters"></app-todo-filters>
 
 <div class="todo-list" *ngIf="todos$ | async as todos">
   <mat-card class="todo-card" *ngFor="let todo of todos" data-testid="todo-item">
@@ -24,7 +26,7 @@
                     color="primary"
                     matTooltip="Complete"
                     *ngIf="!todo.done"
-                    [checked]="todo.done"
+                    [checked]="!!todo.done"
                     (change)="updateTodoStatus(todo, true)"
                     data-testid="todo-item-checkbox"
       ></mat-checkbox>
@@ -39,7 +41,7 @@
     <mat-card-content data-testid="todo-description">{{todo.description}}</mat-card-content>
 
     <mat-card-actions class="todo-card__actions">
-      <button mat-button color="disabled" (click)="deleteTodo(todo.id)" matTooltip="Delete"
+      <button mat-button (click)="deleteTodo(todo.id)" matTooltip="Delete"
               [disabled]="(todoLoading$ | async) == todo.id" data-testid="todo-delete-btn">
         <mat-icon>delete</mat-icon>
       </button>
@@ -57,5 +59,11 @@
     <mat-card-footer *ngIf="(todoLoading$ | async) == todo.id">
       <mat-progress-bar mode="indeterminate"></mat-progress-bar>
     </mat-card-footer>
+  </mat-card>
+
+  <mat-card *ngIf="!todos.length">
+    <mat-card-content>
+      <p>There are no todos</p>
+    </mat-card-content>
   </mat-card>
 </div>

@@ -5,6 +5,7 @@ import {
 } from '@angular/common/http/testing';
 import { TodoService } from './toso.service';
 import { TODO, TODOS } from '../tests/todos.mock';
+import { ENVIRONMENT } from '../../shared/utils/tokens';
 
 describe('TodoService', () => {
   const url = 'http://localhost:3000';
@@ -14,7 +15,13 @@ describe('TodoService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
-      providers: [TodoService],
+      providers: [
+        TodoService,
+        {
+          provide: ENVIRONMENT,
+          useValue: { apiUrl: url },
+        },
+      ],
     });
     service = TestBed.inject(TodoService);
     httpController = TestBed.inject(HttpTestingController);

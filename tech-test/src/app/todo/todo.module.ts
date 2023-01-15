@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 
 import { TodoRoutingModule } from './todo-routing.module';
 import { TodoListComponent } from './components/todo-list/todo-list.component';
@@ -49,6 +49,6 @@ import { TodoFiltersComponent } from './components/todo-filters/todo-filters.com
     MatProgressBarModule,
     MatSnackBarModule,
   ],
-  providers: [TodoService, TodoResolver],
+  providers: [TodoService, TodoResolver, DatePipe],
 })
 export class TodoModule {}

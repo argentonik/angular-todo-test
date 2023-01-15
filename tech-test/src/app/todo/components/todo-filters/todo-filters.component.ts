@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { TodoStatusEnum } from '../../models/todo-status.enum';
 import { FormControl, FormGroup } from '@angular/forms';
 import { applyFilters, clearFilters } from '../../store/todo.actions';
@@ -6,6 +6,8 @@ import { Store } from '@ngrx/store';
 import { debounceTime, distinctUntilChanged, takeUntil } from 'rxjs/operators';
 import { todoFilters } from '../../store/todo.selectors';
 import { Subject } from 'rxjs';
+import { APP_CONFIG } from '../../../shared/utils/tokens';
+import { IAppConfig } from '../../../app.config';
 
 @Component({
   selector: 'app-todo-filters',
@@ -22,11 +24,17 @@ export class TodoFiltersComponent implements OnInit, OnDestroy {
   });
   private destroy$ = new Subject<void>();
 
-  constructor(private store: Store) {}
+  constructor(
+    @Inject(APP_CONFIG) private config: IAppConfig,
+    private store: Store
+  ) {}
 
-  ngOnInit(): void {
+  ngOnInit() {
     this.filters.valueChanges
-      .pipe(debounceTime(300), takeUntil(this.destroy$))
+      .pipe(
+        debounceTime(this.config.typingDebounceTime),
+        takeUntil(this.destroy$)
+      )
       .subscribe((filters) => {
         this.store.dispatch(applyFilters({ filters }));
       });
@@ -48,8 +56,11 @@ export class TodoFiltersComponent implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 
-  public resetFilters() {
+  public resetFilters(): void {
     this.store.dispatch(clearFilters());
-    this.filters.patchValue({ input: '', status: TodoStatusEnum.All });
+    this.filters.patchValue(
+      { input: '', status: TodoStatusEnum.All },
+      { emitEvent: false }
+    );
   }
 }

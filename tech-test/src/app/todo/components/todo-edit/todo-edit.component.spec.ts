@@ -4,6 +4,7 @@ import { TodoEditComponent } from './todo-edit.component';
 import { RouterTestingModule } from '@angular/router/testing';
 import { provideMockStore } from '@ngrx/store/testing';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { APP_CONFIG } from '../../../shared/utils/tokens';
 
 describe('TodoEditComponent', () => {
   let component: TodoEditComponent;
@@ -13,7 +14,7 @@ describe('TodoEditComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [TodoEditComponent],
       imports: [RouterTestingModule, MatCheckboxModule],
-      providers: [provideMockStore()],
+      providers: [provideMockStore(), { provide: APP_CONFIG, useValue: {} }],
     }).compileComponents();
   });
 
