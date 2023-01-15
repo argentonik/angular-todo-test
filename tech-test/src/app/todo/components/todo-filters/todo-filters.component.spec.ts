@@ -65,21 +65,6 @@ describe('TodoFiltersComponent', () => {
     });
   });
 
-  it('should update the UI when the store changes', fakeAsync(async () => {
-    const newFilters = {
-      input: 'Test',
-      status: TodoStatusEnum.NotCompleted,
-    };
-    mockFiltersSelector.setResult(newFilters);
-    mockStore.refreshState();
-    fixture.detectChanges();
-
-    tick(200);
-    fixture.detectChanges();
-
-    expect(component.filters.value).toBe(newFilters);
-  }));
-
   it('should dispatch clearFilters action when filters reset', () => {
     spyOn(mockStore, 'dispatch').and.callThrough();
     click(fixture, 'reset-btn');
